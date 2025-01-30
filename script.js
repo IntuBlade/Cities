@@ -1,5 +1,5 @@
 var map = L.map('map', {
-    backgroundColor: '#000000'
+    backgroundColor: '#1a1a1a'
 }).setView([37.8, -96], 4);
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
@@ -9,19 +9,20 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
 }).addTo(map);
 
 L.control.zoom({
-    position: 'topright'
+    position: 'bottomright'
 }).addTo(map);
 
 L.control.scale({
-    position: 'bottomright',
-    imperial: true
+    position: 'bottomleft',
+    imperial: true,
+    maxWidth: 200
 }).addTo(map);
 
 var customIcon = L.icon({
-    iconUrl: 'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/map-marker-512.png',
-    iconSize: [24, 24],
-    iconAnchor: [12, 24],
-    popupAnchor: [0, -24]
+    iconUrl: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png',
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
 });
 
 var cities = [
@@ -44,11 +45,26 @@ var cities = [
     {name: "Marshfield, MA", lat: 42.0917, lon: -70.7056}
 ];
 
-var markers = L.markerClusterGroup();
+var markers = L.markerClusterGroup({
+    showCoverageOnHover: false,
+    spiderfyOnMaxZoom: true,
+    zoomToBoundsOnClick: true,
+    iconCreateFunction: function(cluster) {
+        var childCount = cluster.getChildCount();
+        var size = Math.min(childCount * 5 + 20, 50);  // Adjust size based on number of markers
+        return L.divIcon({
+            html: '',
+            className: 'custom-cluster-icon',
+            iconSize: L.point(size, size)
+        });
+    }
+});
 
 cities.forEach(function(city) {
     var marker = L.marker([city.lat, city.lon], {icon: customIcon})
-        .bindPopup(city.name);
+        .bindPopup('<strong>' + city.name + '</strong>', {
+            closeButton: false
+        });
     markers.addLayer(marker);
 });
 
@@ -61,7 +77,7 @@ d3.json("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/g
     L.geoJSON(statesData, {
         style: function(feature) {
             return {
-                fillColor: statesWithSales.includes(feature.properties.postal) ? '#FFA07A' : '#000000',
+                fillColor: statesWithSales.includes(feature.properties.postal) ? '#FF5722' : '#1a1a1a',
                 weight: 1,
                 opacity: 1,
                 color: '#333333',
@@ -72,3 +88,21 @@ d3.json("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/g
 });
 
 map.fitBounds(markers.getBounds());
+
+// Add a pulsing effect to markers
+function pulseMarker(e) {
+    var marker = e.target;
+    marker.setIcon(L.icon({
+        iconUrl: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png',
+        iconSize: [48, 48],
+        iconAnchor: [24, 48],
+        popupAnchor: [0, -48]
+    }));
+    setTimeout(function() {
+        marker.setIcon(customIcon);
+    }, 500);
+}
+
+markers.eachLayer(function(layer) {
+    layer.on('mouseover', pulseMarker);
+});
