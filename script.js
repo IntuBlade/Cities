@@ -1,6 +1,8 @@
-var map = L.map('map').setView([37.8, -96], 4);
+var map = L.map('map', {
+    backgroundColor: '#000000'
+}).setView([37.8, -96], 4);
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap contributors © CARTO',
     subdomains: 'abcd',
     maxZoom: 19
@@ -59,10 +61,10 @@ d3.json("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/g
     L.geoJSON(statesData, {
         style: function(feature) {
             return {
-                fillColor: statesWithSales.includes(feature.properties.postal) ? '#FFA07A' : '#ffffff',
+                fillColor: statesWithSales.includes(feature.properties.postal) ? '#FFA07A' : '#000000',
                 weight: 1,
                 opacity: 1,
-                color: 'white',
+                color: '#333333',
                 fillOpacity: 0.7
             };
         }
