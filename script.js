@@ -1,7 +1,7 @@
 var map = L.map('map').setView([37.8, -96], 4);
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '© OpenStreetMap contributors © CARTO',
     subdomains: 'abcd',
     maxZoom: 19
 }).addTo(map);
@@ -17,9 +17,9 @@ L.control.scale({
 
 var customIcon = L.icon({
     iconUrl: 'https://cdn4.iconfinder.com/data/icons/small-n-flat/24/map-marker-512.png',
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32]
+    iconSize: [24, 24],
+    iconAnchor: [12, 24],
+    popupAnchor: [0, -24]
 });
 
 var cities = [
@@ -42,47 +42,14 @@ var cities = [
     {name: "Marshfield, MA", lat: 42.0917, lon: -70.7056}
 ];
 
-var heatData = cities.map(function(city) {
-    return [city.lat, city.lon, 1]; // latitude, longitude, intensity
-});
-
-var heat = L.heatLayer(heatData, {
-    radius: 50,  // Increased radius for larger influence area
-    blur: 30,    // Increased blur for smoother transitions
-    maxZoom: 17,
-    max: 1.0,    // Maximum intensity
-    minOpacity: 0.4, // Increased minimum opacity for better visibility
-    gradient: {
-        0.0: 'rgba(0, 0, 255, 0)',  // Transparent blue for low density
-        0.3: 'cyan',
-        0.5: 'lime',
-        0.7: 'yellow',
-        1.0: 'red'
-    }
-}).addTo(map);
-
-var markers = L.layerGroup();
+var markers = L.markerClusterGroup();
 
 cities.forEach(function(city) {
-    L.marker([city.lat, city.lon], {icon: customIcon, className: 'pulsing-icon'})
-        .bindPopup(city.name)
-        .addTo(markers);
+    var marker = L.marker([city.lat, city.lon], {icon: customIcon})
+        .bindPopup(city.name);
+    markers.addLayer(marker);
 });
 
-map.on('zoomend', function() {
-    var currentZoom = map.getZoom();
-    if (currentZoom > 6) {
-        map.removeLayer(heat);
-        map.addLayer(markers);
-    } else {
-        map.addLayer(heat);
-        map.removeLayer(markers);
-    }
-});
+map.addLayer(markers);
 
-// Initial state
-if (map.getZoom() > 6) {
-    map.addLayer(markers);
-} else {
-    map.addLayer(heat);
-}
+map.fitBounds(markers.getBounds());
