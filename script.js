@@ -47,10 +47,18 @@ var heatData = cities.map(function(city) {
 });
 
 var heat = L.heatLayer(heatData, {
-    radius: 25,
-    blur: 15,
+    radius: 50,  // Increased radius for larger influence area
+    blur: 30,    // Increased blur for smoother transitions
     maxZoom: 17,
-    gradient: {0.4: 'blue', 0.65: 'lime', 1: 'red'}
+    max: 1.0,    // Maximum intensity
+    minOpacity: 0.4, // Increased minimum opacity for better visibility
+    gradient: {
+        0.0: 'rgba(0, 0, 255, 0)',  // Transparent blue for low density
+        0.3: 'cyan',
+        0.5: 'lime',
+        0.7: 'yellow',
+        1.0: 'red'
+    }
 }).addTo(map);
 
 var markers = L.layerGroup();
