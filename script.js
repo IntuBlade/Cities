@@ -52,4 +52,21 @@ cities.forEach(function(city) {
 
 map.addLayer(markers);
 
+// Add GeoJSON layer
+d3.json("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json").then(function(statesData) {
+    var statesWithSales = ["IN", "CA", "NM", "OH", "LA", "NY", "UT", "MA", "PA", "FL", "VA"];
+    
+    L.geoJSON(statesData, {
+        style: function(feature) {
+            return {
+                fillColor: statesWithSales.includes(feature.properties.postal) ? '#FFA07A' : '#ffffff',
+                weight: 1,
+                opacity: 1,
+                color: 'white',
+                fillOpacity: 0.7
+            };
+        }
+    }).addTo(map);
+});
+
 map.fitBounds(markers.getBounds());
