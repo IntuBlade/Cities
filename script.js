@@ -1,14 +1,25 @@
 var map = L.map('map').setView([37.8, -96], 4);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd',
+    maxZoom: 19
+}).addTo(map);
+
+L.control.zoom({
+    position: 'topright'
+}).addTo(map);
+
+L.control.scale({
+    position: 'bottomright',
+    imperial: false
 }).addTo(map);
 
 var customIcon = L.icon({
     iconUrl: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png',
-    iconSize: [38, 38],
-    iconAnchor: [19, 38],
-    popupAnchor: [0, -38]
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
 });
 
 var cities = [
@@ -26,7 +37,7 @@ var cities = [
     {name: "Fort Lauderdale, FL", lat: 26.1373, lon: -80.1201},
     {name: "Davenport, FL", lat: 28.2653, lon: -81.4928},
     {name: "Davie, FL", lat: 26.0629, lon: -80.2727},
-    {name: "Haymarket (Weiskopf Ct.), VA", lat: 38.8128, lon: -77.6363}, // Based on ZIP code 20169
+    {name: "Haymarket (Weiskopf Ct.), VA", lat: 38.8128, lon: -77.6363},
     {name: "Crestview, FL", lat: 30.7621, lon: -86.5705},
     {name: "Marshfield, MA", lat: 42.0917, lon: -70.7056}
 ];
@@ -37,3 +48,23 @@ cities.forEach(function(city) {
         .bindPopup(city.name);
 });
 
+function highlightFeature(e) {
+    var layer = e.target;
+    layer.setStyle({
+        weight: 2,
+        color: '#666',
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+}
+
+function resetHighlight(e) {
+    geojsonLayer.resetStyle(e.target);
+}
+
+function onEachFeature(feature, layer) {
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight
+    });
+}
