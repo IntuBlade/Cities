@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IntuBlade Customer Map</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         body { 
@@ -34,16 +33,6 @@
             font-weight: 700;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-        .custom-cluster-icon {
-            background-color: #FF5722;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-weight: bold;
-            border: 2px solid #ffffff;
-        }
         .leaflet-popup-content-wrapper {
             background-color: rgba(26, 26, 26, 0.9);
             color: #ffffff;
@@ -52,13 +41,28 @@
         .leaflet-popup-tip {
             background-color: rgba(26, 26, 26, 0.9);
         }
+        .glowing-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #FF5722;
+            box-shadow: 0 0 10px #FF5722, 0 0 20px #FF5722, 0 0 30px #FF5722;
+            animation: glow 1.5s infinite alternate;
+        }
+        @keyframes glow {
+            from {
+                box-shadow: 0 0 10px #FF5722, 0 0 20px #FF5722, 0 0 30px #FF5722;
+            }
+            to {
+                box-shadow: 0 0 20px #FF5722, 0 0 30px #FF5722, 0 0 40px #FF5722;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="map-title">IntuBlade Customer Map</div>
     <div id="map"></div>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="script.js"></script>
 </body>
