@@ -1,6 +1,6 @@
 var map = L.map('map', {
     backgroundColor: '#1a1a1a'
-}).setView([39.8283, -98.5795], 3);
+}).setView([39.8283, -98.5795], 3.5);
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
     attribution: '© OpenStreetMap contributors © CARTO',
