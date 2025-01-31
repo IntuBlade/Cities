@@ -68,6 +68,3 @@ d3.json("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/g
         }
     }).addTo(map);
 });
-
-var bounds = L.latLngBounds(cities.map(city => [city.lat, city.lon]));
-map.fitBounds(bounds);
