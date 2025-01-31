@@ -18,13 +18,6 @@ L.control.scale({
     maxWidth: 200
 }).addTo(map);
 
-var customIcon = L.icon({
-    iconUrl: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png',
-    iconSize: [32, 32],
-    iconAnchor: [16, 32],
-    popupAnchor: [0, -32]
-});
-
 var cities = [
     {name: "Evansville, IN", lat: 38.0412, lon: -87.5217},
     {name: "Santa Fe, NM", lat: 35.6870, lon: -105.9378},
@@ -45,30 +38,19 @@ var cities = [
     {name: "Marshfield, MA", lat: 42.0917, lon: -70.7056}
 ];
 
-var markers = L.markerClusterGroup({
-    showCoverageOnHover: false,
-    spiderfyOnMaxZoom: true,
-    zoomToBoundsOnClick: true,
-    iconCreateFunction: function(cluster) {
-        var childCount = cluster.getChildCount();
-        var size = Math.min(childCount * 5 + 20, 50);  // Adjust size based on number of markers
-        return L.divIcon({
-            html: '',
-            className: 'custom-cluster-icon',
-            iconSize: L.point(size, size)
-        });
-    }
-});
-
 cities.forEach(function(city) {
-    var marker = L.marker([city.lat, city.lon], {icon: customIcon})
+    var glowingDot = L.divIcon({
+        className: 'glowing-dot',
+        iconSize: [10, 10],
+        iconAnchor: [5, 5]
+    });
+
+    var marker = L.marker([city.lat, city.lon], {icon: glowingDot})
         .bindPopup('<strong>' + city.name + '</strong>', {
             closeButton: false
         });
-    markers.addLayer(marker);
+    marker.addTo(map);
 });
-
-map.addLayer(markers);
 
 // Add GeoJSON layer
 d3.json("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json").then(function(statesData) {
@@ -87,22 +69,5 @@ d3.json("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/g
     }).addTo(map);
 });
 
-map.fitBounds(markers.getBounds());
-
-// Add a pulsing effect to markers
-function pulseMarker(e) {
-    var marker = e.target;
-    marker.setIcon(L.icon({
-        iconUrl: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png',
-        iconSize: [48, 48],
-        iconAnchor: [24, 48],
-        popupAnchor: [0, -48]
-    }));
-    setTimeout(function() {
-        marker.setIcon(customIcon);
-    }, 500);
-}
-
-markers.eachLayer(function(layer) {
-    layer.on('mouseover', pulseMarker);
-});
+var bounds = L.latLngBounds(cities.map(city => [city.lat, city.lon]));
+map.fitBounds(bounds);
