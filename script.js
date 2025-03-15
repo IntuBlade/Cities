@@ -40,7 +40,7 @@ var cities = [
     {name: "Davie, FL", lat: 26.0629, lon: -80.2727},
     {name: "Haymarket (Weiskopf Ct.), VA", lat: 38.8128, lon: -77.6363},
     {name: "Crestview, FL", lat: 30.7621, lon: -86.5705},
-    {name: "Marshfield, MA", lat: 42.0917, lon: -70.7056}
+    {name: "Marshfield, MA", lat: 42.0917, lon: -70.7056},  // Added comma here
     {name: "Life-Assist, Lenexa, KS", lat: 38.9647, lon: -94.9577},
     {name: "UT Health Science Center, San Antonio, TX", lat: 29.5060, lon: -98.5839},
     {name: "Oviedo, FL", lat: 28.6525, lon: -81.2089},
@@ -53,13 +53,13 @@ var cities = [
     {name: "Fort Bragg, NC", lat: 35.1390, lon: -79.0060},
     {name: "North Fork Fire Department, Sundance, UT", lat: 40.6558, lon: -110.4110},
     {name: "RDS Medical Unit, Washington, DC", lat: 38.8951, lon: -77.0364},
-    {name: "Greer, SC", lat: 34.9337, lon: -82.2276}, 
+    {name: "Greer, SC", lat: 34.9337, lon: -82.2276},
     {name: "Columbus, GA", lat: 32.492222, lon: -84.940277},
     {name: "Irvine, CA", lat: 33.669445, lon: -117.823059},
     {name: "Dulles, VA", lat: 38.9558, lon: -77.4479},
     {name: "Fulton, MS", lat: 33.9251, lon: -88.4092},
     {name: "Eatontown, NJ", lat: 40.3012, lon: -74.0649},
-    {name: "Davie, FL", lat: 26.076477, lon: -80.252113}, 
+    {name: "Davie, FL", lat: 26.076477, lon: -80.252113},
     {name: "Cary, NC", lat: 35.7915, lon: -78.7811}
 ];
 
