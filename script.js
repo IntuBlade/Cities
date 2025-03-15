@@ -78,7 +78,7 @@ cities.forEach(function(city) {
 
 // Add GeoJSON states layer
 d3.json("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json").then(function(statesData) {
-    var statesWithSales = ["IN", "CA", "NM", "OH", "LA", "NY", "UT", "MA", "PA", "FL", "VA"];
+    var statesWithSales = ["IN", "CA", "NM", "OH", "LA", "NY", "UT", "MA", "PA", "FL", "VA", "SC", "GA", "MS", "NJ", "NC"];
     
     L.geoJSON(statesData, {
         style: function(feature) {
