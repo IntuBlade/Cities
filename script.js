@@ -1,100 +1,155 @@
+// ===== Base Map (dark, locked view) =====
 var map = L.map('map', {
-    backgroundColor: '#1a1a1a',
-    zoomControl: false,
-    scrollWheelZoom: false,
-    doubleClickZoom: false,
-    touchZoom: false,
-    boxZoom: false,
-    keyboard: false,
-    minZoom: 4,
-    maxZoom: 4
+  zoomControl: false,
+  scrollWheelZoom: false,
+  doubleClickZoom: false,
+  touchZoom: false,
+  boxZoom: false,
+  keyboard: false,
+  minZoom: 4,
+  maxZoom: 4
 }).setView([39.8283, -98.5795], 4);
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-    attribution: '© OpenStreetMap contributors © CARTO',
-    subdomains: 'abcd',
-    maxZoom: 19
+  attribution: '© OpenStreetMap contributors © CARTO',
+  subdomains: 'abcd',
+  maxZoom: 19
 }).addTo(map);
 
 L.control.scale({
-    position: 'bottomleft',
-    imperial: true,
-    maxWidth: 200
+  position: 'bottomleft',
+  imperial: true,
+  maxWidth: 200
 }).addTo(map);
 
-// Full cities array
-var cities = [
-    {name: "Evansville, IN", lat: 38.0412, lon: -87.5217},
-    {name: "Santa Fe, NM", lat: 35.6870, lon: -105.9378},
-    {name: "Indianapolis, IN", lat: 39.8445, lon: -86.2644},
-    {name: "Cordova, CA", lat: 38.5891, lon: -121.2827},
-    {name: "Wright Patterson AFB, OH", lat: 39.8051, lon: -84.0486},
-    {name: "Baton Rouge, LA", lat: 30.3871, lon: -91.0424},
-    {name: "Brooklyn, NY", lat: 40.6782, lon: -73.9442},
-    {name: "S. Salt Lake, UT", lat: 40.7074, lon: -111.8894},
-    {name: "Turners Falls, MA", lat: 42.5970, lon: -72.5559},
-    {name: "Long Beach, CA", lat: 33.7701, lon: -118.1937},
-    {name: "Malvern, PA", lat: 40.0362, lon: -75.5130},
-    {name: "Fort Lauderdale, FL", lat: 26.1373, lon: -80.1201},
-    {name: "Davenport, FL", lat: 28.2653, lon: -81.4928},
-    {name: "Davie, FL", lat: 26.0765, lon: -80.2521},
-    {name: "Haymarket, VA", lat: 38.8128, lon: -77.6363},
-    {name: "Crestview, FL", lat: 30.7621, lon: -86.5705},
-    {name: "Marshfield, MA", lat: 42.0917, lon: -70.7056},
-    {name: "Lenexa, KS", lat: 38.9647, lon: -94.9577},
-    {name: "San Antonio, TX", lat: 29.5060, lon: -98.5839},
-    {name: "Oviedo, FL", lat: 28.6525, lon: -81.2089},
-    {name: "Kalamazoo, MI", lat: 42.2459, lon: -85.5286},
-    {name: "Sharon, MA", lat: 42.1118, lon: -71.1789},
-    {name: "Underhill, VT", lat: 44.5437, lon: -72.8857},
-    {name: "Richmond, KY", lat: 37.7487, lon: -84.2970},
-    {name: "Berrien Springs, MI", lat: 41.9467, lon: -86.3389},
-    {name: "Tulsa, OK", lat: 36.1314, lon: -95.9372},
-    {name: "Fort Bragg, NC", lat: 35.1390, lon: -79.0060},
-    {name: "Sundance, UT", lat: 40.4631, lon: -111.5962},
-    {name: "Washington, DC", lat: 38.8951, lon: -77.0364},
-    {name: "Greer, SC", lat: 34.9337, lon: -82.2276},
-    {name: "Columbus, GA", lat: 32.4922, lon: -84.9403},
-    {name: "Irvine, CA", lat: 33.6694, lon: -117.8231},
-    {name: "Dulles, VA", lat: 38.9558, lon: -77.4479},
-    {name: "Fulton, MS", lat: 34.2665, lon: -88.4003},
-    {name: "Eatontown, NJ", lat: 40.2959, lon: -74.0513},
-    {name: "Cary, NC", lat: 35.7915, lon: -78.7811},
-    {name: "Cudjoe Key, FL", lat: 24.6610, lon: -81.4824},
-    {name: "Tucson, AZ", lat: 32.1706, lon: -110.8839},
-    {name: "Ridgewood, NY", lat: 40.7018, lon: -73.9005},
-    {name: "Quincy, MA", lat: 42.2529, lon: -71.0023},
-    {name: "Sacramento, CA", lat: 38.5816, lon: -121.4944},
-    {name: "Portsmouth, VA", lat: 36.8354, lon: -76.2983},
-    {name: "Raleigh, NC", lat: 35.7987, lon: -78.7036}
-];
+// ===== Qualitative tiers (no numbers shown) =====
+// Tier 5: Very Strong   → #CC5E00
+// Tier 4: Strong        → #FF7A00
+// Tier 3: Moderate      → #FFA24D
+// Tier 2: Low           → #FFD1A6
+// Tier 1: Presence      → #FFEBD6
+// Tier 0: None          → #FFFFFF
 
-// Add glowing dots
-cities.forEach(function(city) {
-    var glowingDot = L.divIcon({
-        className: 'glowing-dot',
-        iconSize: [10, 10],
-        iconAnchor: [5, 5]
-    });
+const TIER_LABELS = {
+  5: 'Very Strong',
+  4: 'Strong',
+  3: 'Moderate',
+  2: 'Low',
+  1: 'Presence',
+  0: 'None'
+};
 
-    L.marker([city.lat, city.lon], { icon: glowingDot })
-        .bindPopup('<strong>' + city.name + '</strong>', { closeButton: false })
-        .addTo(map);
-});
+function colorForTier(t) {
+  switch (t) {
+    case 5: return '#CC5E00';
+    case 4: return '#FF7A00';
+    case 3: return '#FFA24D';
+    case 2: return '#FFD1A6';
+    case 1: return '#FFEBD6';
+    default: return '#FFFFFF';
+  }
+}
 
-// Add GeoJSON states layer
-d3.json("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json").then(function(statesData) {
-    var statesWithSales = ["IN", "CA", "NM", "OH", "LA", "NY", "UT", "MA", "PA", "FL", "VA", "SC", "GA", "MS", "NJ", "NC"];
-    
-    L.geoJSON(statesData, {
-        style: function(feature) {
-            return {
-                fillColor: statesWithSales.includes(feature.properties.postal) ? '#FF5722' : '#1a1a1a',
-                weight: 1,
-                opacity: 1,
-                color: '#333333',
-                fillOpacity: 0.7
-            };
+// ===== Obfuscated state tiers (postal → tier) =====
+// Derived from your shipment history, but without exposing counts.
+const stateTier = {
+  // Tier 5 (Very Strong)
+  NY: 5, OK: 5,
+
+  // Tier 4 (Strong)
+  GA: 4, MA: 4, LA: 4, TX: 4, FL: 4,
+
+  // Tier 3 (Moderate)
+  NC: 3, VA: 3, OH: 3, NE: 3, WV: 3, IN: 3, MO: 3, UT: 3, CA: 3, AZ: 3, DC: 3, WI: 3,
+
+  // Tier 2 (Low)
+  PA: 2, NH: 2, SC: 2,
+
+  // Tier 1 (Presence)
+  NM: 1, CO: 1, TN: 1, ME: 1, VT: 1, IA: 1, CT: 1, KS: 1, ND: 1, NV: 1,
+  MI: 1, IL: 1, OR: 1, AK: 1, MS: 1
+
+  // Others default to Tier 0 (None)
+};
+
+// Default tier for any state not listed
+function getTier(postal) {
+  return stateTier.hasOwnProperty(postal) ? stateTier[postal] : 0;
+}
+
+// ===== FIPS → Postal code mapping for us-atlas states =====
+const fipsToPostal = {
+  1:"AL", 2:"AK", 4:"AZ", 5:"AR", 6:"CA", 8:"CO", 9:"CT", 10:"DE", 11:"DC",
+  12:"FL", 13:"GA", 15:"HI", 16:"ID", 17:"IL", 18:"IN", 19:"IA", 20:"KS",
+  21:"KY", 22:"LA", 23:"ME", 24:"MD", 25:"MA", 26:"MI", 27:"MN", 28:"MS",
+  29:"MO", 30:"MT", 31:"NE", 32:"NV", 33:"NH", 34:"NJ", 35:"NM", 36:"NY",
+  37:"NC", 38:"ND", 39:"OH", 40:"OK", 41:"OR", 42:"PA", 44:"RI", 45:"SC",
+  46:"SD", 47:"TN", 48:"TX", 49:"UT", 50:"VT", 51:"VA", 53:"WA", 54:"WV",
+  55:"WI", 56:"WY"
+};
+
+// ===== Load US states (TopoJSON → GeoJSON) =====
+// topojson-client is loaded in index.html
+d3.json('https://unpkg.com/us-atlas@3/states-10m.json').then(function(us) {
+  const statesGeo = topojson.feature(us, us.objects.states);
+
+  function style(feature) {
+    const postal = fipsToPostal[feature.id];
+    const tier = getTier(postal);
+    return {
+      fillColor: colorForTier(tier),
+      weight: 1.25,
+      color: '#000000', // black outline
+      opacity: 1,
+      fillOpacity: tier === 0 ? 0.0 : (tier >= 5 ? 0.95 : tier === 4 ? 0.9 : tier === 3 ? 0.85 : tier === 2 ? 0.8 : 0.75)
+    };
+  }
+
+  function onEachFeature(feature, layer) {
+    const postal = fipsToPostal[feature.id];
+    const name = feature.properties.name;
+    const tier = getTier(postal);
+
+    // Qualitative tooltip only (no numbers/ranges)
+    layer.bindTooltip(
+      `<div style="font-weight:700;font-size:13px;margin-bottom:2px">${name} (${postal || '—'})</div>
+       <div style="font-size:12px;opacity:.9">Activity: <strong>${TIER_LABELS[tier]}</strong></div>`,
+      { sticky: true, direction: 'auto', opacity: 0.95 }
+    );
+
+    layer.on({
+      mouseover: function(e) {
+        const l = e.target;
+        l.setStyle({ weight: 2.5, color: '#000000' });
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+          l.bringToFront();
         }
-    }).addTo(map);
+      },
+      mouseout: function(e) {
+        geojson.resetStyle(e.target);
+      }
+    });
+  }
+
+  const geojson = L.geoJSON(statesGeo, {
+    style: style,
+    onEachFeature: onEachFeature
+  }).addTo(map);
 });
+
+// ===== Optional: replace legend text to hide numbers =====
+(function replaceLegendText(){
+  const el = document.getElementById('legend');
+  if (!el) return;
+  el.innerHTML = `
+    <h4>Sales Activity by State</h4>
+    <div class="grid">
+      <div class="key"><span class="swatch" style="background:#CC5E00;border:1px solid #000"></span>Very Strong</div><div>Highest activity</div>
+      <div class="key"><span class="swatch" style="background:#FF7A00;border:1px solid #000"></span>Strong</div><div>High activity</div>
+      <div class="key"><span class="swatch" style="background:#FFA24D;border:1px solid #000"></span>Moderate</div><div>Moderate activity</div>
+      <div class="key"><span class="swatch" style="background:#FFD1A6;border:1px solid #000"></span>Low</div><div>Some activity</div>
+      <div class="key"><span class="swatch" style="background:#FFEBD6;border:1px solid #000"></span>Presence</div><div>Initial presence</div>
+      <div class="key"><span class="swatch" style="background:#FFFFFF;border:1px solid #000"></span>None</div><div>No current activity</div>
+    </div>
+  `;
+})();
