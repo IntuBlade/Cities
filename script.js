@@ -33,18 +33,22 @@ map.getPane('outlinePane').style.zIndex = 420;
 // ===== Obfuscated qualitative tiers (no counts shown) =====
 const TIER_LABELS = { 5: 'Anchor', 4: 'Strong', 3: 'Established', 2: 'Growing', 1: 'Emerging', 0: '—' };
 
-// Calibrated from your shipment history without exposing numbers
+// Calibrated from shipment history without exposing numbers
 const stateTier = {
   // 5 (Anchor)
   NY: 5, OK: 5,
+
   // 4 (Strong)
   GA: 4, MA: 4, LA: 4, TX: 4, FL: 4,
+
   // 3 (Established)
   NC: 3, VA: 3, OH: 3, NE: 3, WV: 3, IN: 3, MO: 3, UT: 3, CA: 3, AZ: 3, DC: 3, WI: 3,
+
   // 2 (Growing)
-  PA: 2, NH: 2, SC: 2,
+  PA: 2, NH: 2, SC: 2, KY: 2, KS: 2, MI: 2, IL: 2, OR: 2,
+
   // 1 (Emerging)
-  NM: 1, CO: 1, TN: 1, ME: 1, VT: 1, IA: 1, CT: 1, KS: 1, ND: 1, NV: 1, MI: 1, IL: 1, OR: 1, AK: 1, MS: 1
+  NM: 1, CO: 1, TN: 1, ME: 1, VT: 1, IA: 1, CT: 1, ND: 1, NV: 1, AK: 1, MS: 1, NJ: 1
 };
 
 function getTier(postal) {
