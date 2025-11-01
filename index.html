@@ -203,7 +203,7 @@
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="https://unpkg.com/topojson-client@3"></script>
 
-  <!-- html2canvas for PNG export (no keys required) -->
+  <!-- html2canvas for PNG export -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
   <!-- Your app logic -->
@@ -230,24 +230,25 @@
         ts.textContent = now.toLocaleDateString(undefined, opts);
       }
 
-      // Contact button → mailto
+      // Contact button → clean mailto body, no URL
       const btnContact = document.getElementById('btnContact');
       if(btnContact){
         btnContact.addEventListener('click', function(){
           const subject = encodeURIComponent('IntuBlade inquiry');
           const body = encodeURIComponent(
-            'Hi IntuBlade team,%0D%0A%0D%0A' +
-            'I would like to get in touch about IntuBlade.%0D%0A' +
-            'Please contact me with next steps.%0D%0A%0D%0A' +
-            '—%0D%0A' +
-            'Sent from: ' + location.href
+            'Hi IntuBlade team,' + '\n\n' +
+            'I would like to get in touch about IntuBlade.' + '\n\n' +
+            'Name: ' + '\n' +
+            'Organization: ' + '\n' +
+            'Role: ' + '\n' +
+            'Phone: ' + '\n' +
+            'Use case or timeline: ' + '\n\n' +
+            'Thank you.'
           );
           window.location.href = `mailto:contact@intublade.com?subject=${subject}&body=${body}`;
         });
       }
-
-      // Snapshot handled in script.js so it captures Leaflet tiles and overlays;
-      // this just ensures the button exists for that handler to hook into.
+      // Snapshot wiring is in script.js
     })();
   </script>
 </body>
