@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>IntuBlade Adoption Across the U.S.</title>
 
-  <!-- Leaflet -->
+  <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <!-- Fonts -->
@@ -71,6 +71,7 @@
     .btn{
       cursor:pointer;border-radius:10px;border:1px solid var(--border);
       padding:8px 10px;font-weight:700;font-size:13px;background:#171719;color:#fff;
+      text-decoration:none;display:inline-block;
     }
     .btn.primary{
       background:linear-gradient(180deg, rgba(255,87,34,0.95), rgba(255,87,34,0.8));
@@ -179,12 +180,17 @@
   </div>
 
   <!-- CTA -->
-  <aside class="cta" role="complementary" aria-label="Get in touch">
-    <h4>See IntuBlade in action</h4>
-    <p>Ask for a demo kit or talk with a clinical trainer.</p>
+  <aside class="cta" role="complementary" aria-label="Purchase or contact">
+    <h4>Purchase today or contact us</h4>
+    <p>Order IntuBlade now or reach our team with questions.</p>
     <div class="cta-actions">
-      <button id="btnDemo" class="btn primary focus-ring" type="button">Request a demo kit</button>
-      <button id="btnTalk" class="btn focus-ring" type="button">Talk to a trainer</button>
+      <a class="btn primary focus-ring"
+         href="https://payments-na1.hubspot.com/payments/NDyFTGDQKt?referrer=PAYMENT_LINK"
+         target="_blank" rel="noopener"
+         aria-label="Purchase IntuBlade now">
+        Purchase Now
+      </a>
+      <button id="btnContact" class="btn focus-ring" type="button" aria-label="Contact IntuBlade">Contact Us</button>
       <button id="btnSnapshot" class="btn focus-ring" type="button" title="Save a PNG snapshot of this map">Save snapshot</button>
     </div>
   </aside>
@@ -204,7 +210,7 @@
   <script src="script.js"></script>
 
   <script>
-    // Lightweight UI wiring for legend and timestamp; core map logic stays in script.js
+    // Lightweight UI wiring for legend, timestamp, and CTA; core map logic lives in script.js
     (function(){
       const toggle = document.getElementById('legendToggle');
       const panel  = document.getElementById('legendPanel');
@@ -219,19 +225,29 @@
       // Timestamp
       const ts = document.getElementById('lastUpdated');
       if(ts){
-        // You can overwrite this in script.js if you want a fixed date
         const now = new Date();
         const opts = { year:'numeric', month:'short', day:'2-digit' };
         ts.textContent = now.toLocaleDateString(undefined, opts);
       }
-      // CTA click handlers (replace with your URLs)
-      document.getElementById('btnDemo')?.addEventListener('click', ()=> {
-        window.location.href = '/demo'; // swap to your actual route
-      });
-      document.getElementById('btnTalk')?.addEventListener('click', ()=> {
-        window.location.href = '/contact'; // swap to your actual route
-      });
-      // Snapshot handled in script.js so it captures Leaflet tiles and overlays cleanly
+
+      // Contact button → mailto
+      const btnContact = document.getElementById('btnContact');
+      if(btnContact){
+        btnContact.addEventListener('click', function(){
+          const subject = encodeURIComponent('IntuBlade inquiry');
+          const body = encodeURIComponent(
+            'Hi IntuBlade team,%0D%0A%0D%0A' +
+            'I would like to get in touch about IntuBlade.%0D%0A' +
+            'Please contact me with next steps.%0D%0A%0D%0A' +
+            '—%0D%0A' +
+            'Sent from: ' + location.href
+          );
+          window.location.href = `mailto:contact@intublade.com?subject=${subject}&body=${body}`;
+        });
+      }
+
+      // Snapshot handled in script.js so it captures Leaflet tiles and overlays;
+      // this just ensures the button exists for that handler to hook into.
     })();
   </script>
 </body>
