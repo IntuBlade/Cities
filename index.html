@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>IntuBlade US Sales Heatmap</title>
+  <title>IntuBlade Adoption Across the U.S.</title>
 
   <!-- Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -34,13 +34,13 @@
     .leaflet-popup-content-wrapper,.leaflet-popup-tip{
       background:rgba(22,22,24,0.96);color:var(--text);border:1px solid rgba(255,255,255,.06);
     }
-    /* Glow pane: neon effect */
+    /* Glow pane: neon effect using marker orange #FF5722 */
     .leaflet-pane.glow-pane svg path {
       mix-blend-mode: screen;
       filter:
-        drop-shadow(0 0 6px rgba(255,150,0,0.55))
-        drop-shadow(0 0 14px rgba(255,180,0,0.42))
-        drop-shadow(0 0 28px rgba(255,210,0,0.32));
+        drop-shadow(0 0 6px  rgba(255,87,34,0.55))
+        drop-shadow(0 0 14px rgba(255,87,34,0.42))
+        drop-shadow(0 0 28px rgba(255,87,34,0.30));
     }
     .leaflet-pane.outline-pane svg path { mix-blend-mode: normal; }
     .leaflet-control-attribution{
@@ -50,7 +50,7 @@
   </style>
 </head>
 <body>
-  <div class="map-title">IntuBlade US Sales Heatmap</div>
+  <div class="map-title">IntuBlade Adoption Across the U.S.</div>
   <div id="map"></div>
 
   <script>
@@ -85,16 +85,19 @@
       NM:1, CO:1, TN:1, ME:1, VT:1, IA:1, CT:1, KS:1, ND:1, NV:1, MI:1, IL:1, OR:1, AK:1, MS:1
     };
     function getTier(postal){ return stateTier.hasOwnProperty(postal) ? stateTier[postal] : 0; }
+
+    // Use marker orange (#FF5722), vary opacity only
     function fillRGBAForTier(t){
       switch(t){
-        case 5: return 'rgba(255,170,20,0.95)'; // brightest
-        case 4: return 'rgba(255,150, 8,0.88)';
-        case 3: return 'rgba(255,135, 4,0.78)';
-        case 2: return 'rgba(255,120, 0,0.60)';
-        case 1: return 'rgba(255,120, 0,0.28)'; // faint
-        default:return 'rgba(255,255,255,0.00)'; // invisible
+        case 5: return 'rgba(255, 87, 34, 0.90)'; // brightest
+        case 4: return 'rgba(255, 87, 34, 0.75)';
+        case 3: return 'rgba(255, 87, 34, 0.55)';
+        case 2: return 'rgba(255, 87, 34, 0.35)';
+        case 1: return 'rgba(255, 87, 34, 0.18)'; // faint
+        default:return 'rgba(255, 87, 34, 0.00)'; // invisible
       }
     }
+
     const fipsToPostal = {
       1:"AL",2:"AK",4:"AZ",5:"AR",6:"CA",8:"CO",9:"CT",10:"DE",11:"DC",12:"FL",13:"GA",
       15:"HI",16:"ID",17:"IL",18:"IN",19:"IA",20:"KS",21:"KY",22:"LA",23:"ME",24:"MD",
