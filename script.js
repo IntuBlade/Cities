@@ -5,14 +5,14 @@
    Base Map (dark, locked)
    ========================= */
 var map = L.map('map', {
-  zoomControl: false,
-  scrollWheelZoom: false,
-  doubleClickZoom: false,
-  touchZoom: false,
-  boxZoom: false,
-  keyboard: false,
-  minZoom: 4,
-  maxZoom: 4
+  zoomControl: true,
+  scrollWheelZoom: true,
+  doubleClickZoom: true,
+  touchZoom: true,
+  boxZoom: true,
+  keyboard: true,
+  minZoom: 2,
+  maxZoom: 8
 }).setView([39.8283, -98.5795], 4);
 
 L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
@@ -263,7 +263,13 @@ d3.json('https://unpkg.com/us-atlas@3/states-10m.json').then(function(us) {
     { name: 'Reno NV',              lat: 39.5296, lon: -119.8138, tier: 1 },
     { name: 'Bangor ME',            lat: 44.8012, lon: -68.7778, tier: 1 },
     { name: 'Concord NH',           lat: 43.2081, lon: -71.5376, tier: 1 },
-    { name: 'Cheyenne WY',          lat: 41.1400, lon: -104.8202, tier: 1 }
+    { name: 'Cheyenne WY',          lat: 41.1400, lon: -104.8202, tier: 1 },
+
+    // === INTERNATIONAL ===
+    { name: 'Kyiv, Ukraine',         lat: 50.4501, lon: 30.5234, tier: 1 },
+    { name: 'Jerusalem, Israel',     lat: 31.7683, lon: 35.2137, tier: 1 },
+    { name: 'Bogota, Colombia',      lat: 4.7110, lon: -74.0721, tier: 1 },
+    { name: 'Santiago, Chile',       lat: -33.4489, lon: -70.6693, tier: 1 }
   ];
 
   function addPulsingDot(pt){
