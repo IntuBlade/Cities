@@ -88,31 +88,19 @@
     }
 
     /* Panes for effects */
-    .leaflet-pane.glow-pane svg path {
-      mix-blend-mode: screen;
-      filter:
-        drop-shadow(0 0 6px  rgba(255,87,34,0.55))
-        drop-shadow(0 0 14px rgba(255,87,34,0.42))
-        drop-shadow(0 0 28px rgba(255,87,34,0.28));
-    }
     .leaflet-pane.outline-pane svg path { mix-blend-mode: normal; }
 
     /* Pulsing metro dots (created via L.divIcon in JS) */
     .pulse-dot{
-      width:10px;height:10px;border-radius:999px;background:var(--accent);
-      box-shadow:0 0 14px rgba(255,87,34,.55),0 0 28px rgba(255,87,34,.35);
-      animation:pulse 1.6s infinite ease-in-out;
-      opacity:.8;
+      width:14px;height:14px;border-radius:999px;background:var(--accent);
+      box-shadow:0 0 8px rgba(255,87,34,.7),0 0 20px rgba(255,87,34,.5),0 0 40px rgba(255,87,34,.3);
+      animation:pulse 2.4s infinite ease-in-out;
+      opacity:.95;
     }
-    .pulse-dot.t1{opacity:.25}
-    .pulse-dot.t2{opacity:.4}
-    .pulse-dot.t3{opacity:.6}
-    .pulse-dot.t4{opacity:.8}
-    .pulse-dot.t5{opacity:.95}
     @keyframes pulse{
-      0%{transform:scale(0.95);box-shadow:0 0 10px rgba(255,87,34,.4),0 0 20px rgba(255,87,34,.25);}
-      50%{transform:scale(1.12);box-shadow:0 0 16px rgba(255,87,34,.6),0 0 34px rgba(255,87,34,.35);}
-      100%{transform:scale(0.95);box-shadow:0 0 10px rgba(255,87,34,.4),0 0 20px rgba(255,87,34,.25);}
+      0%{transform:scale(0.97);box-shadow:0 0 8px rgba(255,87,34,.6),0 0 18px rgba(255,87,34,.4),0 0 36px rgba(255,87,34,.2);}
+      50%{transform:scale(1.06);box-shadow:0 0 12px rgba(255,87,34,.8),0 0 24px rgba(255,87,34,.55),0 0 44px rgba(255,87,34,.3);}
+      100%{transform:scale(0.97);box-shadow:0 0 8px rgba(255,87,34,.6),0 0 18px rgba(255,87,34,.4),0 0 36px rgba(255,87,34,.2);}
     }
 
     /* Distributor badge pin (SVG injected via JS, class used for styling) */
@@ -152,30 +140,10 @@
     </button>
     <div id="legendPanel" class="legend-panel" hidden>
       <div class="legend-row">
-        <span class="legend-swatch" style="background:rgba(255,87,34,0.90)"></span>
-        <div class="legend-desc"><strong>Anchor</strong> — highest visible activity</div>
+        <span class="legend-swatch" style="background:rgba(255,87,34,0.95);border-radius:999px;width:14px;height:14px;box-shadow:0 0 8px rgba(255,87,34,.5)"></span>
+        <div class="legend-desc"><strong>Active location</strong> — IntuBlade in use</div>
       </div>
-      <div class="legend-row">
-        <span class="legend-swatch" style="background:rgba(255,87,34,0.75)"></span>
-        <div class="legend-desc"><strong>Strong</strong> — high activity</div>
-      </div>
-      <div class="legend-row">
-        <span class="legend-swatch" style="background:rgba(255,87,34,0.55)"></span>
-        <div class="legend-desc"><strong>Established</strong> — steady activity</div>
-      </div>
-      <div class="legend-row">
-        <span class="legend-swatch" style="background:rgba(255,87,34,0.35)"></span>
-        <div class="legend-desc"><strong>Growing</strong> — building momentum</div>
-      </div>
-      <div class="legend-row">
-        <span class="legend-swatch" style="background:rgba(255,87,34,0.18)"></span>
-        <div class="legend-desc"><strong>Emerging</strong> — early presence</div>
-      </div>
-      <div class="legend-row">
-        <span class="legend-swatch" style="background:rgba(255,87,34,0.00);border:1px solid rgba(255,255,255,.2)"></span>
-        <div class="legend-desc"><strong>—</strong> — no current activity</div>
-      </div>
-      <div class="legend-sub">Hover a state to see its status. Metro dots are snapped to major cities; exact sites are anonymized.</div>
+      <div class="legend-sub">Dots are snapped to major cities; exact sites are anonymized. Hover a state to see its name.</div>
     </div>
   </div>
 
@@ -185,7 +153,7 @@
     <p>Order IntuBlade now or reach our team with questions.</p>
     <div class="cta-actions">
       <a class="btn primary focus-ring"
-         href="https://payments-na1.hubspot.com/payments/NDyFTGDQKt?referrer=PAYMENT_LINK"
+         href="https://intublade.com/order"
          target="_blank" rel="noopener"
          aria-label="Purchase IntuBlade now">
         Purchase Now

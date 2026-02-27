@@ -26,10 +26,6 @@ L.control.scale({ position: 'bottomleft', imperial: true, maxWidth: 200 }).addTo
 /* =========================
    Panes for layered effects
    ========================= */
-map.createPane('glowPane');
-map.getPane('glowPane').classList.add('glow-pane');
-map.getPane('glowPane').style.zIndex = 410;
-
 map.createPane('outlinePane');
 map.getPane('outlinePane').classList.add('outline-pane');
 map.getPane('outlinePane').style.zIndex = 420;
@@ -62,18 +58,6 @@ function getTier(postal) {
   return Object.prototype.hasOwnProperty.call(stateTier, postal) ? stateTier[postal] : 0;
 }
 
-// Keep hue locked to marker orange (#FF5722); vary opacity only
-function fillRGBAForTier(t) {
-  switch (t) {
-    case 5: return 'rgba(255, 87, 34, 0.90)'; // brightest
-    case 4: return 'rgba(255, 87, 34, 0.75)';
-    case 3: return 'rgba(255, 87, 34, 0.55)';
-    case 2: return 'rgba(255, 87, 34, 0.35)';
-    case 1: return 'rgba(255, 87, 34, 0.18)'; // faint
-    default: return 'rgba(255, 87, 34, 0.00)'; // invisible
-  }
-}
-
 /* =========================
    FIPS → Postal mapping
    ========================= */
@@ -91,25 +75,9 @@ const fipsToPostal = {
 d3.json('https://unpkg.com/us-atlas@3/states-10m.json').then(function(us) {
   const statesGeo = topojson.feature(us, us.objects.states);
 
-  // Glow fill layer
-  L.geoJSON(statesGeo, {
-    style: function(feature) {
-      const postal = fipsToPostal[feature.id];
-      const tier = getTier(postal);
-      return {
-        pane: 'glowPane',
-        fillColor: fillRGBAForTier(tier),
-        fillOpacity: 1,
-        weight: 0,
-        color: 'transparent',
-        opacity: 0
-      };
-    }
-  }).addTo(map);
-
-  // Outline + tooltips
+  // Outline + tooltips (nearly invisible, preserves hover)
   const outlineLayer = L.geoJSON(statesGeo, {
-    style: { pane: 'outlinePane', fill: false, weight: 1.4, color: '#000000', opacity: 1 },
+    style: { pane: 'outlinePane', fill: false, weight: 0.5, color: 'rgba(255,255,255,0.08)', opacity: 1 },
     onEachFeature: function(feature, layer) {
       const postal = fipsToPostal[feature.id];
       const name = feature.properties.name;
@@ -123,7 +91,7 @@ d3.json('https://unpkg.com/us-atlas@3/states-10m.json').then(function(us) {
       );
 
       layer.on({
-        mouseover: function(e) { const l = e.target; l.setStyle({ weight: 2.2, color: '#000000' }); l.bringToFront(); },
+        mouseover: function(e) { const l = e.target; l.setStyle({ weight: 1.2, color: 'rgba(255,255,255,0.2)' }); l.bringToFront(); },
         mouseout:  function(e) { outlineLayer.resetStyle(e.target); }
       });
     }
@@ -273,17 +241,15 @@ d3.json('https://unpkg.com/us-atlas@3/states-10m.json').then(function(us) {
   ];
 
   function addPulsingDot(pt){
-    const tier = Math.max(1, Math.min(5, pt.tier|0)); // clamp 1..5
     const icon = L.divIcon({
-      className: `pulse-dot t${tier}`,
-      iconSize: [10,10],
-      iconAnchor: [5,5]
+      className: 'pulse-dot',
+      iconSize: [14,14],
+      iconAnchor: [7,7]
     });
     const m = L.marker([pt.lat, pt.lon], { icon, interactive:true })
       .bindTooltip(
-        `<div style="font-weight:700;font-size:12px">${pt.name}</div>
-         <div style="font-size:12px;opacity:.9">Status: <strong>${TIER_LABELS[tier]}</strong></div>`,
-        { direction:'top', offset:[0,-6], opacity:0.95, sticky:true }
+        `<div style="font-weight:700;font-size:12px">${pt.name}</div>`,
+        { direction:'top', offset:[0,-8], opacity:0.95, sticky:true }
       );
     m.addTo(map);
   }
