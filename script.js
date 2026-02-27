@@ -262,24 +262,23 @@ d3.json('https://unpkg.com/us-atlas@3/states-10m.json').then(function(us) {
      (obfuscated, generic pin)
      ========================= */
   const distributors = [
-    // Example distributors; add/remove as needed
-    { name:'Life-Assist (Region Hub)', lat:38.5891, lon:-121.2827 },
-    { name:'Chinook (Region Hub)',     lat:36.1314, lon:-95.9372 }
+    { name:'Life-Assist',    lat:38.5891, lon:-121.2827 },
+    { name:'Chinook Medical', lat:36.1314, lon:-95.9372 },
+    { name:'EverReady First Aid', lat:40.6340, lon:-73.9012 }
   ];
 
-  const badgeSvg =
-    encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="26" height="36" viewBox="0 0 24 24"><path fill="#FF5722" d="M12 2C7.59 2 4 5.58 4 10c0 5.25 7 12 8 12s8-6.75 8-12c0-4.42-3.58-8-8-8zm0 11.5A3.5 3.5 0 1 1 12 6.5a3.5 3.5 0 0 1 0 7z"/></svg>');
-  const badgeIcon = L.icon({
-    className: 'badge-pin',
-    iconUrl: 'data:image/svg+xml;charset=UTF-8,' + badgeSvg,
-    iconSize: [26,36],
-    iconAnchor: [13,36],
-    popupAnchor: [0,-30]
-  });
-
   distributors.forEach(d => {
-    L.marker([d.lat, d.lon], { icon: badgeIcon, pane:'outlinePane' })
-      .bindPopup(`<strong>${d.name}</strong><br/><span style="font-size:12px;opacity:.9">Distributor</span>`, { closeButton:false })
+    const icon = L.divIcon({
+      className: 'dist-marker',
+      html: '<div class="dist-ring"><div class="dist-center"></div></div>',
+      iconSize: [24,24],
+      iconAnchor: [12,12]
+    });
+    L.marker([d.lat, d.lon], { icon, interactive:true })
+      .bindTooltip(
+        `<div style="font-weight:700;font-size:12px">${d.name}</div><div style="font-size:11px;opacity:.8">Distributor</div>`,
+        { direction:'top', offset:[0,-14], opacity:0.95, sticky:true }
+      )
       .addTo(map);
   });
 

@@ -107,9 +107,29 @@
       100%{box-shadow:0 0 8px rgba(255,87,34,.6),0 0 18px rgba(255,87,34,.4),0 0 36px rgba(255,87,34,.2);}
     }
 
-    /* Distributor badge pin (SVG injected via JS, class used for styling) */
-    .badge-pin{
-      filter:drop-shadow(0 0 8px rgba(255,87,34,.45));
+    /* Distributor ring markers */
+    .dist-marker{
+      background:transparent !important;
+      border:none !important;
+    }
+    .dist-ring{
+      width:24px;height:24px;border-radius:999px;
+      border:3px solid #FF5722;
+      background:transparent;
+      box-shadow:0 0 10px rgba(255,87,34,.6),0 0 24px rgba(255,87,34,.35);
+      animation:dist-pulse 2.8s infinite ease-in-out;
+      position:relative;
+    }
+    .dist-center{
+      width:6px;height:6px;border-radius:999px;
+      background:#FF5722;
+      position:absolute;top:50%;left:50%;
+      transform:translate(-50%,-50%);
+    }
+    @keyframes dist-pulse{
+      0%{box-shadow:0 0 8px rgba(255,87,34,.5),0 0 20px rgba(255,87,34,.3);}
+      50%{box-shadow:0 0 14px rgba(255,87,34,.7),0 0 30px rgba(255,87,34,.45);}
+      100%{box-shadow:0 0 8px rgba(255,87,34,.5),0 0 20px rgba(255,87,34,.3);}
     }
 
     /* Mobile tweaks */
@@ -146,6 +166,10 @@
       <div class="legend-row">
         <span class="legend-swatch" style="background:rgba(255,87,34,0.95);border-radius:999px;width:14px;height:14px;box-shadow:0 0 8px rgba(255,87,34,.5)"></span>
         <div class="legend-desc"><strong>Active location</strong> — IntuBlade in use</div>
+      </div>
+      <div class="legend-row">
+        <span class="legend-swatch" style="width:18px;height:18px;border-radius:999px;border:2.5px solid #FF5722;background:transparent;box-shadow:0 0 8px rgba(255,87,34,.5);position:relative;display:flex;align-items:center;justify-content:center"><span style="width:5px;height:5px;border-radius:999px;background:#FF5722"></span></span>
+        <div class="legend-desc"><strong>Distributor</strong> — authorized partner</div>
       </div>
       <div class="legend-sub">Dots are snapped to major cities; exact sites are anonymized. Hover a state to see its name.</div>
     </div>
