@@ -91,16 +91,20 @@
     .leaflet-pane.outline-pane svg path { mix-blend-mode: normal; }
 
     /* Pulsing metro dots (created via L.divIcon in JS) */
+    .pulse-marker{
+      background:transparent !important;
+      border:none !important;
+    }
     .pulse-dot{
-      width:14px;height:14px;border-radius:999px;background:var(--accent);
+      width:14px;height:14px;border-radius:999px;background:#FF5722;
       box-shadow:0 0 8px rgba(255,87,34,.7),0 0 20px rgba(255,87,34,.5),0 0 40px rgba(255,87,34,.3);
       animation:pulse 2.4s infinite ease-in-out;
       opacity:.95;
     }
     @keyframes pulse{
-      0%{transform:scale(0.97);box-shadow:0 0 8px rgba(255,87,34,.6),0 0 18px rgba(255,87,34,.4),0 0 36px rgba(255,87,34,.2);}
-      50%{transform:scale(1.06);box-shadow:0 0 12px rgba(255,87,34,.8),0 0 24px rgba(255,87,34,.55),0 0 44px rgba(255,87,34,.3);}
-      100%{transform:scale(0.97);box-shadow:0 0 8px rgba(255,87,34,.6),0 0 18px rgba(255,87,34,.4),0 0 36px rgba(255,87,34,.2);}
+      0%{box-shadow:0 0 8px rgba(255,87,34,.6),0 0 18px rgba(255,87,34,.4),0 0 36px rgba(255,87,34,.2);}
+      50%{box-shadow:0 0 12px rgba(255,87,34,.8),0 0 24px rgba(255,87,34,.55),0 0 44px rgba(255,87,34,.3);}
+      100%{box-shadow:0 0 8px rgba(255,87,34,.6),0 0 18px rgba(255,87,34,.4),0 0 36px rgba(255,87,34,.2);}
     }
 
     /* Distributor badge pin (SVG injected via JS, class used for styling) */

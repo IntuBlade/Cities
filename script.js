@@ -242,7 +242,8 @@ d3.json('https://unpkg.com/us-atlas@3/states-10m.json').then(function(us) {
 
   function addPulsingDot(pt){
     const icon = L.divIcon({
-      className: 'pulse-dot',
+      className: 'pulse-marker',
+      html: '<div class="pulse-dot"></div>',
       iconSize: [14,14],
       iconAnchor: [7,7]
     });
